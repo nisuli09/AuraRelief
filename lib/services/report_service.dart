@@ -10,11 +10,11 @@ class ReportService {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
 
-    // 📅 Calculate date FIRST
+    //  Calculate date FIRST
     final now = DateTime.now();
     final startDate = now.subtract(Duration(days: days));
 
-    // 🔥 Fetch filtered data directly from Firestore
+    //  Fetch filtered data directly from Firestore
     final snapshot = await FirebaseFirestore.instance
         .collection('logs')
         .where('userId', isEqualTo: user.uid)
@@ -35,7 +35,7 @@ class ReportService {
       throw Exception("No data available");
     }
 
-    // 📊 Process Data
+    //  Process Data
     int total = filteredData.length;
 
     double avgIntensity =
@@ -44,7 +44,7 @@ class ReportService {
             .reduce((a, b) => a + b) /
         total;
 
-    // 🔥 Trigger count
+    //  Trigger count
     Map<String, int> triggerCount = {};
     for (var item in filteredData) {
       List triggers = (item['triggers'] is List) ? item['triggers'] : [];
@@ -58,16 +58,16 @@ class ReportService {
     var sortedTriggers = triggerCount.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
 
-    // 📅 Date formatting
+    //  Date formatting
     final dateFormat = DateFormat('yyyy-MM-dd');
 
-    // 📄 Create PDF
+    //  Create PDF
     final pdf = pw.Document();
 
     pdf.addPage(
       pw.MultiPage(
         build: (context) => [
-          // 🧾 Title
+          //  Title
           pw.Text(
             "Migraine Report",
             style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold),
@@ -80,7 +80,7 @@ class ReportService {
 
           pw.Divider(),
 
-          // 📊 Summary
+          //  Summary
           pw.Text("Summary", style: pw.TextStyle(fontSize: 18)),
 
           pw.Text("Total Migraine Days: $total"),
@@ -96,7 +96,7 @@ class ReportService {
 
           pw.Divider(),
 
-          // 📋 Detailed Records
+          //  Detailed Records
           pw.Text("Detailed Records", style: pw.TextStyle(fontSize: 18)),
 
           pw.SizedBox(height: 10),
@@ -123,7 +123,7 @@ class ReportService {
       ),
     );
 
-    // 📤 Show / Share PDF
+    //  Show / Share PDF
     await Printing.sharePdf(
       bytes: await pdf.save(),
       filename: 'migraine_report.pdf',
