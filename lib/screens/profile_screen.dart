@@ -347,7 +347,7 @@ This app is designed for educational purposes and does not replace medical advic
                     ),
                     const SizedBox(height: 16),
 
-                    // ⏰ Reminder Time Card
+                    //  Reminder Time Card
                     Container(
                       decoration: BoxDecoration(
                         color: _cardColor,
@@ -381,7 +381,7 @@ This app is designed for educational purposes and does not replace medical advic
                     ),
                     const SizedBox(height: 16),
 
-                    // 📄 Download Report Card
+                    //  Download Report Card
                     Container(
                       decoration: BoxDecoration(
                         color: _cardColor,
@@ -448,7 +448,7 @@ This app is designed for educational purposes and does not replace medical advic
 
                           if (selectedDays == null) return;
 
-                          // 🔄 Loading
+                          //  Loading
                           if (!context.mounted) return;
                           showDialog(
                             context: context,
