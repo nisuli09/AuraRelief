@@ -91,9 +91,11 @@ class _TherapyScreenState extends State<TherapyScreen> {
 
       final data = jsonDecode(response.body);
 
-      if (data["therapies"] == null) {
-        return [];
-      }
+print(data);
+
+if (data["therapies"] == null) {
+  return [];
+}
 
       List therapies = data["therapies"];
 
