@@ -73,6 +73,8 @@ class _TherapyScreenState extends State<TherapyScreen> {
 
       List therapies = data["therapies"];
 
+      debugPrint("THERAPIES: $therapies");
+
       return therapies.map((t) {
         return {
           "title": t,
@@ -98,15 +100,27 @@ class _TherapyScreenState extends State<TherapyScreen> {
         .limit(1)
         .snapshots()
         .listen((snapshot) async {
-          final logs = snapshot.docs.map((doc) => doc.data()).toList();
+          try {
+            final logs = snapshot.docs.map((doc) => doc.data()).toList();
 
-          final aiResult = await getAIRecommendations(logs);
+            final aiResult = await getAIRecommendations(logs);
 
-          if (mounted) {
-            setState(() {
-              therapyList = aiResult;
-              isLoading = false;
-            });
+            debugPrint("AI RESULT: $aiResult");
+
+            if (mounted) {
+              setState(() {
+                therapyList = aiResult;
+                isLoading = false;
+              });
+            }
+          } catch (e) {
+            debugPrint("THERAPY ERROR: $e");
+
+            if (mounted) {
+              setState(() {
+                isLoading = false;
+              });
+            }
           }
         });
   }
