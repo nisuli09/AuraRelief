@@ -14,7 +14,6 @@ class _PredictionScreenState extends State<PredictionScreen> {
   double stressLevel = 5;
   double hydrationLevel = 5;
   double screenTime = 4;
-  double caffeineIntake = 3;
   double moodLevel = 5;
 
   String predictionResult = "";
