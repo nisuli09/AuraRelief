@@ -22,7 +22,6 @@ def predict():
     data['stress_level'],
     data['hydration_level'],
     data['screen_time'],
-    data['caffeine_intake'],
     data['mood_level']
 ]])
 

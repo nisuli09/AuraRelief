@@ -35,31 +35,6 @@ class _TherapyScreenState extends State<TherapyScreen> {
 
   Map<String, String> feedbackMap = {};
 
-  Future<void> loadRecommendations() async {
-    try {
-      final snapshot = await FirebaseFirestore.instance
-          .collection('logs')
-          .where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-          .orderBy('date', descending: true)
-          .limit(1)
-          .get();
-
-      final logs = snapshot.docs.map((doc) => doc.data()).toList();
-
-      final aiResult = await getAIRecommendations(logs);
-
-      setState(() {
-        therapyList = aiResult;
-        isLoading = false;
-      });
-    } catch (e) {
-      debugPrint("LOAD ERROR: $e");
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
-
   Future<List<Map<String, dynamic>>> getAIRecommendations(List logs) async {
     try {
       if (logs.isEmpty) return [];
@@ -75,7 +50,6 @@ class _TherapyScreenState extends State<TherapyScreen> {
               "stress_level": latestLog['stressLevel'] ?? 5,
               "hydration_level": latestLog['hydrationLevel'] ?? 2,
               "screen_time": latestLog['screenTime'] ?? 4,
-              "caffeine_intake": latestLog['caffeineIntake'] ?? 3,
               "mood_level": latestLog['moodLevel'] ?? 3,
             }),
           )
@@ -91,11 +65,11 @@ class _TherapyScreenState extends State<TherapyScreen> {
 
       final data = jsonDecode(response.body);
 
-print(data);
+      debugPrint(data.toString());
 
-if (data["therapies"] == null) {
-  return [];
-}
+      if (data["therapies"] == null) {
+        return [];
+      }
 
       List therapies = data["therapies"];
 
