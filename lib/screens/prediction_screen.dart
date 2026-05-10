@@ -14,6 +14,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
   double stressLevel = 5;
   double hydrationLevel = 5;
   double screenTime = 4;
+  double caffeineIntake = 3;
   double moodLevel = 5;
 
   String predictionResult = "";
@@ -35,7 +36,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
 
     try {
       final response = await http.post(
-        Uri.parse("http://10.145.111.146:50000/predict"),
+        Uri.parse('https://web-production-bdd01.up.railway.app/predict'),
         headers: {'Content-Type': 'application/json'},
 
         body: jsonEncode({
@@ -43,16 +44,17 @@ class _PredictionScreenState extends State<PredictionScreen> {
           'stress_level': stressLevel,
           'hydration_level': hydrationLevel,
           'screen_time': screenTime,
+          'caffeine_intake': caffeineIntake,
           'mood_level': moodLevel,
         }),
       );
 
       final data = jsonDecode(response.body);
 
-      int prediction = data['prediction'];
+      int severity = data['severity'];
 
       setState(() {
-        predictionResult = prediction == 1
+        predictionResult = severity == 1
             ? "⚠ High Migraine Risk"
             : "✅ Low Migraine Risk";
 
@@ -221,6 +223,14 @@ class _PredictionScreenState extends State<PredictionScreen> {
                   buildSlider("Screen Time", screenTime, 0, 15, (value) {
                     setState(() {
                       screenTime = value;
+                    });
+                  }),
+
+                  buildSlider("Caffeine Intake", caffeineIntake, 0, 10, (
+                    value,
+                  ) {
+                    setState(() {
+                      caffeineIntake = value;
                     });
                   }),
 
