@@ -68,13 +68,14 @@ class _TherapyScreenState extends State<TherapyScreen> {
 
       final response = await http
           .post(
-            Uri.parse("http://10.145.111.146:50000/predict"),
+            Uri.parse('https://web-production-bdd01.up.railway.app/predict'),
             headers: {"Content-Type": "application/json"},
             body: jsonEncode({
               "sleep_hours": latestLog['sleepHours'] ?? 6,
               "stress_level": latestLog['stressLevel'] ?? 5,
               "hydration_level": latestLog['hydrationLevel'] ?? 2,
               "screen_time": latestLog['screenTime'] ?? 4,
+              "caffeine_intake": latestLog['caffeineIntake'] ?? 3,
               "mood_level": latestLog['moodLevel'] ?? 3,
             }),
           )
