@@ -64,18 +64,18 @@ class _TherapyScreenState extends State<TherapyScreen> {
     try {
       if (logs.isEmpty) return [];
 
-      final latestLog = logs.last;
+      final latestLog = logs.first;
 
       final response = await http
           .post(
-            Uri.parse("http://10.107.45.146:5000/predict"),
+            Uri.parse("http://10.145.111.146:50000/predict"),
             headers: {"Content-Type": "application/json"},
             body: jsonEncode({
               "sleep_hours": latestLog['sleepHours'] ?? 6,
               "stress_level": latestLog['stressLevel'] ?? 5,
-              "hydration_level": latestLog['hydration_level'] ?? 2,
-              "screen_time": latestLog['screen_time'] ?? 4,
-              "mood_level": latestLog['mood_level'] ?? 3,
+              "hydration_level": latestLog['hydrationLevel'] ?? 2,
+              "screen_time": latestLog['screenTime'] ?? 4,
+              "mood_level": latestLog['moodLevel'] ?? 3,
             }),
           )
           .timeout(const Duration(seconds: 10));
@@ -113,7 +113,25 @@ class _TherapyScreenState extends State<TherapyScreen> {
   @override
   void initState() {
     super.initState();
-    loadRecommendations();
+
+    FirebaseFirestore.instance
+        .collection('logs')
+        .where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .orderBy('date', descending: true)
+        .limit(1)
+        .snapshots()
+        .listen((snapshot) async {
+          final logs = snapshot.docs.map((doc) => doc.data()).toList();
+
+          final aiResult = await getAIRecommendations(logs);
+
+          if (mounted) {
+            setState(() {
+              therapyList = aiResult;
+              isLoading = false;
+            });
+          }
+        });
   }
 
   @override
