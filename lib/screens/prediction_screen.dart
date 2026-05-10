@@ -35,7 +35,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://10.107.45.146:5000/predict'),
+        Uri.parse("http://10.145.111.146:50000/predict"),
         headers: {'Content-Type': 'application/json'},
 
         body: jsonEncode({
