@@ -51,15 +51,17 @@ class _PredictionScreenState extends State<PredictionScreen> {
 
       final data = jsonDecode(response.body);
 
-      int severity = data['severity'];
+print(data);
 
-      setState(() {
-        predictionResult = severity == 1
-            ? "⚠ High Migraine Risk"
-            : "✅ Low Migraine Risk";
+int severity = (data['severity'] as num?)?.toInt() ?? 0;
 
-        isLoading = false;
-      });
+setState(() {
+  predictionResult = severity == 1
+      ? "⚠ High Migraine Risk"
+      : "✅ Low Migraine Risk";
+
+  isLoading = false;
+});
     } catch (e) {
       setState(() {
         predictionResult = "Error: $e";

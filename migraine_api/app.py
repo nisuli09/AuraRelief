@@ -18,15 +18,16 @@ def predict():
         data = request.json
 
         features = np.array([[
-            data['sleep_hours'],
-            data['stress_level'],
-            data['hydration_level'],
-            data['screen_time'],
-            data['mood_level']
-        ]])
+    data['sleep_hours'],
+    data['stress_level'],
+    data['hydration_level'],
+    data['screen_time'],
+    data['caffeine_intake'],
+    data['mood_level']
+]])
 
         # ML Prediction
-        prediction = model.predict(features)[0]
+        prediction = int(model.predict(features)[0])
 
         therapies = []
 
