@@ -44,21 +44,23 @@ class _PredictionScreenState extends State<PredictionScreen> {
           'stress_level': stressLevel,
           'hydration_level': hydrationLevel,
           'screen_time': screenTime,
-          'caffeine_intake': caffeineIntake,
           'mood_level': moodLevel,
         }),
       );
 
       final data = jsonDecode(response.body);
 
-print(data);
-
+debugPrint(data.toString());
 int severity = (data['severity'] as num?)?.toInt() ?? 0;
 
 setState(() {
-  predictionResult = severity == 1
-      ? "⚠ High Migraine Risk"
-      : "✅ Low Migraine Risk";
+  if (severity == 0) {
+    predictionResult = "✅ Low Migraine Risk";
+  } else if (severity == 1) {
+    predictionResult = "⚠ Moderate Migraine Risk";
+  } else {
+    predictionResult = "🚨 High Migraine Risk";
+  }
 
   isLoading = false;
 });
@@ -228,13 +230,6 @@ setState(() {
                     });
                   }),
 
-                  buildSlider("Caffeine Intake", caffeineIntake, 0, 10, (
-                    value,
-                  ) {
-                    setState(() {
-                      caffeineIntake = value;
-                    });
-                  }),
 
                   buildSlider("Mood Level", moodLevel, 0, 10, (value) {
                     setState(() {
