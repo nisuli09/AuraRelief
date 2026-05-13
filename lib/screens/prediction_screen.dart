@@ -117,10 +117,6 @@ setState(() {
       appBar: AppBar(
         backgroundColor: _backgroundColor,
         elevation: 0,
-        title: const Text(
-          "AI Migraine Prediction",
-          style: TextStyle(color: Colors.white),
-        ),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
 
