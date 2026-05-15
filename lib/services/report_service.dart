@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/services.dart';
 
 class ReportService {
   static Future<void> generateMigraineReport(int days) async {
@@ -58,8 +59,23 @@ class ReportService {
     var sortedTriggers = triggerCount.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
 
+    // Highest pain level
+    int highestPain = filteredData
+        .map((e) => (e['painLevel'] is int) ? e['painLevel'] as int : 0)
+        .reduce((a, b) => a > b ? a : b);
+
+    // Most common trigger
+    String mostCommonTrigger = sortedTriggers.isNotEmpty
+        ? sortedTriggers.first.key
+        : "None";
+
     //  Date formatting
     final dateFormat = DateFormat('yyyy-MM-dd');
+
+    // Load logo image
+    final ByteData bytes = await rootBundle.load('assets/images/logo.png');
+
+    final Uint8List logoImage = bytes.buffer.asUint8List();
 
     //  Create PDF
     final pdf = pw.Document();
@@ -67,32 +83,92 @@ class ReportService {
     pdf.addPage(
       pw.MultiPage(
         build: (context) => [
+          pw.Center(
+            child: pw.Image(pw.MemoryImage(logoImage), width: 80, height: 80),
+          ),
+
+          pw.SizedBox(height: 10),
           //  Title
           pw.Text(
-            "Migraine Report",
+            "AuraRelief - Migraine Health Report",
             style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold),
           ),
 
           pw.SizedBox(height: 10),
 
-          pw.Text("User ID: ${user.uid}"),
+          pw.Text("Patient Email: ${user.email}"),
           pw.Text("Generated on: ${dateFormat.format(DateTime.now())}"),
+
+          pw.Text(
+            "Report Period: ${dateFormat.format(startDate)} - ${dateFormat.format(now)}",
+          ),
 
           pw.Divider(),
 
-          //  Summary
-          pw.Text("Summary", style: pw.TextStyle(fontSize: 18)),
-
-          pw.Text("Total Migraine Days: $total"),
-          pw.Text("Average Pain Level: ${avgIntensity.toStringAsFixed(1)}"),
+          // Summary
+          pw.Text(
+            "Summary",
+            style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold),
+          ),
 
           pw.SizedBox(height: 10),
 
-          pw.Text("Top Triggers:"),
+          pw.Table(
+            border: pw.TableBorder.all(),
+            children: [
+              pw.TableRow(
+                children: [
+                  pw.Padding(
+                    padding: const pw.EdgeInsets.all(8),
+                    child: pw.Text("Total Migraine Episodes"),
+                  ),
+                  pw.Padding(
+                    padding: const pw.EdgeInsets.all(8),
+                    child: pw.Text(total.toString()),
+                  ),
+                ],
+              ),
 
-          ...sortedTriggers
-              .take(3)
-              .map((e) => pw.Text("${e.key} (${e.value} times)")),
+              pw.TableRow(
+                children: [
+                  pw.Padding(
+                    padding: const pw.EdgeInsets.all(8),
+                    child: pw.Text("Average Pain Level"),
+                  ),
+                  pw.Padding(
+                    padding: const pw.EdgeInsets.all(8),
+                    child: pw.Text(avgIntensity.toStringAsFixed(1)),
+                  ),
+                ],
+              ),
+
+              pw.TableRow(
+                children: [
+                  pw.Padding(
+                    padding: const pw.EdgeInsets.all(8),
+                    child: pw.Text("Highest Pain Level"),
+                  ),
+                  pw.Padding(
+                    padding: const pw.EdgeInsets.all(8),
+                    child: pw.Text(highestPain.toString()),
+                  ),
+                ],
+              ),
+
+              pw.TableRow(
+                children: [
+                  pw.Padding(
+                    padding: const pw.EdgeInsets.all(8),
+                    child: pw.Text("Most Common Trigger"),
+                  ),
+                  pw.Padding(
+                    padding: const pw.EdgeInsets.all(8),
+                    child: pw.Text(mostCommonTrigger),
+                  ),
+                ],
+              ),
+            ],
+          ),
 
           pw.Divider(),
 

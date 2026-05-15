@@ -49,20 +49,20 @@ class _PredictionScreenState extends State<PredictionScreen> {
 
       final data = jsonDecode(response.body);
 
-debugPrint(data.toString());
-int severity = (data['severity'] as num?)?.toInt() ?? 0;
+      debugPrint(data.toString());
+      int severity = (data['severity'] as num?)?.toInt() ?? 0;
 
-setState(() {
-  if (severity == 0) {
-    predictionResult = "✅ Low Migraine Risk";
-  } else if (severity == 1) {
-    predictionResult = "⚠ Moderate Migraine Risk";
-  } else {
-    predictionResult = "🚨 High Migraine Risk";
-  }
+      setState(() {
+        if (severity == 0) {
+          predictionResult = "✅ Low Migraine Risk";
+        } else if (severity == 1) {
+          predictionResult = "⚠ Moderate Migraine Risk";
+        } else {
+          predictionResult = "🚨 High Migraine Risk";
+        }
 
-  isLoading = false;
-});
+        isLoading = false;
+      });
     } catch (e) {
       setState(() {
         predictionResult = "Error: $e";
@@ -224,7 +224,6 @@ setState(() {
                       screenTime = value;
                     });
                   }),
-
 
                   buildSlider("Mood Level", moodLevel, 0, 10, (value) {
                     setState(() {
