@@ -358,7 +358,7 @@ class _InsightsScreenState extends State<InsightsScreen> {
                         const SizedBox(width: 16),
                         Expanded(
                           child: _buildStatCard(
-                            title: 'Improvement',
+                            title: 'Monthly Change',
                             icon: _isImprovementPositive
                                 ? Icons.trending_up
                                 : Icons.trending_down,
