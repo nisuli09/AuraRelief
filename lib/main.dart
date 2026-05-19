@@ -57,12 +57,12 @@ class MyApp extends StatelessWidget {
             );
           }
 
-          // If logged in → Dashboard
+          
           if (snapshot.hasData) {
             return const MainScreen();
           }
 
-          // If not logged in → Login Page
+          
           return const LoginScreen();
         },
       ),

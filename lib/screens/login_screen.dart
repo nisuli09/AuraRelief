@@ -80,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Center(
                               child: Image.asset(
                                 'assets/images/logo.png',
-                                height: 120, // adjust if needed
+                                height: 120, 
                               ),
                             ),
                             const SizedBox(height: 24),
@@ -149,7 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                   final firestore = FirebaseFirestore.instance;
 
-                                  //  If input is NOT email → treat as username
+                                  
                                   if (!input.contains('@')) {
                                     final usernameDoc = await firestore
                                         .collection('usernames')
@@ -172,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     email = userDoc['email'];
                                   }
 
-                                  // login with email (original or fetched)
+                                  // login with email 
                                   await FirebaseAuth.instance
                                       .signInWithEmailAndPassword(
                                         email: email,

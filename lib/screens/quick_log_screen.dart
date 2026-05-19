@@ -10,8 +10,7 @@ class QuickLogScreen extends StatefulWidget {
 }
 
 class _QuickLogScreenState extends State<QuickLogScreen> {
-  // Removed unused _selectedIndex
-
+  
   double _painLevel = 5;
   bool _hadMigraine = true;
   double _sleepDuration = 7;
@@ -45,7 +44,7 @@ class _QuickLogScreenState extends State<QuickLogScreen> {
       final user = FirebaseAuth.instance.currentUser;
       if (user == null) return;
 
-      //  1. Save log
+      //  Save log
       await FirebaseFirestore.instance.collection('logs').add({
         'date': Timestamp.now(),
         'timestamp': FieldValue.serverTimestamp(),
@@ -62,7 +61,7 @@ class _QuickLogScreenState extends State<QuickLogScreen> {
         'userId': user.uid,
       });
 
-      //  2. Update streak
+      //  Update streak
       final userDoc = FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid);
@@ -86,7 +85,7 @@ class _QuickLogScreenState extends State<QuickLogScreen> {
           } else if (difference > 1) {
             streak = 1;
           } else if (difference == 0) {
-            // same day → do nothing
+            
           }
         } else {
           streak = 1;
@@ -100,7 +99,7 @@ class _QuickLogScreenState extends State<QuickLogScreen> {
         'lastLogDate': Timestamp.now(),
       }, SetOptions(merge: true));
 
-      //  3. Success message
+      //  Success message
       if (!mounted) return;
       ScaffoldMessenger.of(
         context,
@@ -191,7 +190,7 @@ class _QuickLogScreenState extends State<QuickLogScreen> {
                         setState(() {
                           _hadMigraine = value;
 
-                          // If no migraine → reset pain
+                          
                           if (!_hadMigraine) {
                             _painLevel = 0;
                           }
@@ -233,7 +232,7 @@ class _QuickLogScreenState extends State<QuickLogScreen> {
                 value: _sleepDuration,
                 min: 0,
                 max: 12,
-                divisions: 24, // half-hour increments
+                divisions: 24, 
                 minText: '0 hours',
                 maxText: '12 hours',
                 valueText: _sleepDuration % 1 == 0
