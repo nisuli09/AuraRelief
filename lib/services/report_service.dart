@@ -11,11 +11,11 @@ class ReportService {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
 
-    //  Calculate date FIRST
+    //  Calculate date 
     final now = DateTime.now();
     final startDate = now.subtract(Duration(days: days));
 
-    //  Fetch filtered data directly from Firestore
+    //  Fetch filtered data 
     final snapshot = await FirebaseFirestore.instance
         .collection('logs')
         .where('userId', isEqualTo: user.uid)
@@ -24,12 +24,12 @@ class ReportService {
 
     final data = snapshot.docs.map((doc) => doc.data()).toList();
 
-    //  DEBUG
+    
     debugPrint("Total docs: ${data.length}");
 
     final filteredData = data;
 
-    //  DEBUG
+    
     debugPrint("Filtered docs: ${filteredData.length}");
 
     if (filteredData.isEmpty) {

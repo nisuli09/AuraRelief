@@ -17,7 +17,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final _passwordController = TextEditingController();
   final _usernameController = TextEditingController();
 
-  // ignore: prefer_final_fields
+  
   bool _isPasswordHidden = true;
 
   final Color _primaryColor = const Color(0xFF4A6FA5); // calm blue

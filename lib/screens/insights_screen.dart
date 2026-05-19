@@ -289,7 +289,7 @@ class _InsightsScreenState extends State<InsightsScreen> {
           _isImprovementPositive = isPos;
           _monthlyTrendSpots = spots;
           _monthlyTrendLabels = monthLabels;
-          _maxTrendY = maxY + (maxY * 0.2); // Add 20% headroom
+          _maxTrendY = maxY + (maxY * 0.2); 
           _triggerSections = pieSections;
           _triggerLegends = legends;
           _timeOfDayCounts = timeCounts;
